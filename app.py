@@ -5,10 +5,6 @@ import requests
 import json
 import os
 
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
-
 app = Flask(__name__)
 
 IPINFO_TOKEN = os.getenv("IPINFO_TOKEN", "")
@@ -56,7 +52,7 @@ def redirector():
     with open(LOG_FILE, "a", encoding="utf-8") as f:
         f.write(json.dumps(log_entry, ensure_ascii=False) + "\n")
 
-    return redirect("https://www.google.com/maps/place/%D0%92%D0%B8%D0%BB%D0%BB%D0%B0...")  # твоя ссылка
+    return redirect("https://www.google.com/maps/place/%D0%92%D0%B8%D0%BB%D0%BB%D0%B0...")
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
