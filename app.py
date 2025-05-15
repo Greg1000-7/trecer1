@@ -7,7 +7,7 @@ import os
 
 app = Flask(__name__)
 
-IPINFO_TOKEN = "9bc48d8ba04675"  # замени на свой токен
+IPINFO_TOKEN = "9bc48d8ba04675"
 LOG_FILE = "flask_geo_redirect.jsonl"
 
 def geolocate(ip):
@@ -37,20 +37,19 @@ def redirector():
 
     user_agent_str = request.headers.get("User-Agent", "")
     device = DeviceDetector(user_agent_str).parse()
-    geo = geolocate(ip)
 
     log_entry = {
         "timestamp": datetime.utcnow().isoformat() + "Z",
         "ip": ip,
-        "geo": geo,
+        "geo": geolocate(ip),
         "user_agent": user_agent_str,
         "device": {
-            "family": device.device_type() or "unknown",
-            "brand": device.device_brand() or "unknown",
-            "model": device.device_model() or "unknown"
+            "family": device.device().family if device.device() else "unknown",
+            "brand": device.device().brand if device.device() else "unknown",
+            "model": device.device().model if device.device() else "unknown"
         },
-        "os": (device.os_name() or "unknown") + " " + (device.os_version() or ""),
-        "browser": (device.client_name() or "unknown") + " " + (device.client_version() or "")
+        "os": f"{device.os_name() or 'unknown'} {device.os_version() or ''}".strip(),
+        "browser": f"{device.client_name() or 'unknown'} {device.client_version() or ''}".strip()
     }
 
     log_line = json.dumps(log_entry, ensure_ascii=False)
