@@ -1,6 +1,6 @@
 from flask import Flask, request, redirect
 from datetime import datetime
-from user_agents import parse as ua_parse
+from device_detector import DeviceDetector
 import requests
 import json
 import os
