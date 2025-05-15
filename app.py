@@ -7,7 +7,7 @@ import os
 
 app = Flask(__name__)
 
-IPINFO_TOKEN = os.getenv("IPINFO_TOKEN", "")
+IPINFO_TOKEN = "9bc48d8ba04675"
 LOG_FILE = "flask_geo_redirect.jsonl"  # Упростил путь для совместимости
 
 def geolocate(ip):
@@ -32,7 +32,9 @@ def index():
 
 @app.route("/r")
 def redirector():
-    ip = request.headers.get("X-Forwarded-For", request.remote_addr)
+    xff = request.headers.get("X-Forwarded-For", "")
+ip = xff.split(",")[0].strip() if xff else request.remote_addr
+
     ua = ua_parse(request.headers.get("User-Agent", ""))
     geo = geolocate(ip)
 
