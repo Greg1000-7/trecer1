@@ -1,4 +1,4 @@
-Flask
-requests
-user-agents
-gunicorn
+Flask==3.1.1
+requests==2.32.3
+user-agents==2.2.0
+gunicorn==23.0.0
