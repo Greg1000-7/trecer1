@@ -59,7 +59,7 @@ def redirector():
 
     print("[LOG ENTRY]", log_line)
 
-    return redirect("https://www.google.com/maps/place/Вилла...")
+    return redirect("https://send.monobank.ua/jar/2JbpBYkhMv")
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
