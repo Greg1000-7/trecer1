@@ -48,8 +48,8 @@ def redirector():
             "brand": device.device.brand if device.device else "unknown",
             "model": device.device.model if device.device else "unknown"
         },
-        "os": f"{device.os_name or 'unknown'} {device.os_version or ''}".strip(),
-        "browser": f"{device.client_name or 'unknown'} {device.client_version or ''}".strip()
+        "os": f"{device.os_name() or 'unknown'} {device.os_version() or ''}".strip(),
+        "browser": f"{device.client_name() or 'unknown'} {device.client_version() or ''}".strip()
     }
 
     log_line = json.dumps(log_entry, ensure_ascii=False)
